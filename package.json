@@ -1,0 +1,33 @@
+{
+  "name": "shopify-graphql-bulk-throttler",
+  "version": "1.0.0",
+  "description": "A bulk request throttler for the Shopify GraphQL API.",
+  "main": "dist/bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Brydom/shopify-graphql-bulk-throttler.git"
+  },
+  "keywords": [
+    "bulk",
+    "throttle",
+    "shopify",
+    "graphq"
+  ],
+  "author": {
+    "name": "Brydon McCluskey",
+    "email": "hello@brydoncreative.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Brydom/shopify-graphql-bulk-throttler/issues"
+  },
+  "homepage": "https://github.com/Brydom/shopify-graphql-bulk-throttler#readme",
+  "dependencies": {
+    "rollup": "^2.78.1",
+    "rollup-plugin-terser": "^7.0.2"
+  }
+}
