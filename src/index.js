@@ -20,7 +20,7 @@ export default class ShopiftyGraphqlBulkThrottler {
 
     this.restoreInterval = setInterval(
       this.#restorePts.bind(this),
-      restoreRateInterval
+      1000
     );
 
     this.kill = false;
