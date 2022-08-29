@@ -1,5 +1,4 @@
-
-export default class ShopiftyGraphqlBulkThrottler {
+export default class ShopifyGraphqlBulkThrottler {
   /**
    * @param {Object} shopifyGraphQLClient
    */
@@ -18,15 +17,12 @@ export default class ShopiftyGraphqlBulkThrottler {
     this.requestQueue = [];
     this.responses = [];
 
-    this.restoreInterval = setInterval(
-      this.#restorePts.bind(this),
-      1000
-    );
-
-    this.kill = false;
+    this.restoreInterval = setInterval(this.#restorePts.bind(this), 1000);
   }
 
   #restorePts() {
+    const shouldCallNext = this.currentPts < this.restoreRate;
+
     if (this.currentPts < this.maximumAvailable) {
       if (this.currentPts + this.restoreRate > this.maximumAvailable) {
         this.currentPts = this.maximumAvailable;
@@ -34,6 +30,15 @@ export default class ShopiftyGraphqlBulkThrottler {
         this.currentPts += this.restoreRate;
       }
     }
+
+    if (shouldCallNext) this.#next();
+  }
+
+  restart() {
+    this.requestsRan = 0;
+    this.requestsCompleted = 0;
+    this.requestQueue = [];
+    this.responses = [];
   }
 
   /**
@@ -73,17 +78,11 @@ export default class ShopiftyGraphqlBulkThrottler {
    * Executes the next request in the queue, and if the cap has not been reached, a subsequent request will be executed
    */
   #next() {
-    // Finished queue
-    console.log(
-      `---- ${this.requestsCompleted} REQUESTS COMPLETED, ${this.requestQueue.length} REMAINING`
-    );
-
-    if (this.kill) return;
-
     // Run next request
     const hasCompletedFirstRequest = this.requestsCompleted >= 1;
     const hasBucketCapacityForRequest =
       (this.currentPts || 0) - this.ptsPerRequest > 0;
+
     if (
       ((hasCompletedFirstRequest && hasBucketCapacityForRequest) ||
         this.requestsRan === 0) &&
@@ -105,7 +104,6 @@ export default class ShopiftyGraphqlBulkThrottler {
    */
   stopRestore() {
     clearInterval(this.restoreInterval);
-    this.kill = true;
   }
 
   /**
