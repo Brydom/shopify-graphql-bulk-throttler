@@ -1,6 +1,6 @@
 {
   "name": "shopify-graphql-bulk-throttler",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A bulk request throttler for the Shopify GraphQL API.",
   "main": "dist/bundle.js",
   "scripts": {
